@@ -257,7 +257,8 @@
 
 <img width="1451" height="519" alt="image" src="https://github.com/user-attachments/assets/a17b4868-4929-47fc-934c-926abe8c768c" />
 
-
+## 效果演示视频
+https://www.bilibili.com/video/BV18KKw6zEFT/?share_source=copy_web&vd_source=5f8e03673d870706c690f30b18ceac8c
 ## 快速开始
 
 ### 环境准备
