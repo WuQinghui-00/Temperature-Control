@@ -258,7 +258,7 @@
 <img width="1451" height="519" alt="image" src="https://github.com/user-attachments/assets/a17b4868-4929-47fc-934c-926abe8c768c" />
 
 ## 效果演示视频
-https://www.bilibili.com/video/BV18KKw6zEFT/?share_source=copy_web&vd_source=5f8e03673d870706c690f30b18ceac8c
+ -**哔哩哔哩：**[STM32F407 TEC温控系统](https://www.bilibili.com/video/BV18KKw6zEFT/?share_source=copy_web&vd_source=5f8e03673d870706c690f30b18ceac8c)
 ## 快速开始
 
 ### 环境准备
@@ -337,6 +337,7 @@ https://www.bilibili.com/video/BV18KKw6zEFT/?share_source=copy_web&vd_source=5f8
 
 - **技术博客：** [ooxiaosui-CSDN博客](https://blog.csdn.net/ooxiaosui)
 - **GitHub：** [WuQinghui-00](https://github.com/WuQinghui-00)
+- **哔哩哔哩：**[STM32F407 TEC温控系统](https://www.bilibili.com/video/BV18KKw6zEFT/?share_source=copy_web&vd_source=5f8e03673d870706c690f30b18ceac8c)
 
 
 ---
