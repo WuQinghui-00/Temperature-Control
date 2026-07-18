@@ -7,6 +7,8 @@
 ## 项目简介
 
 本项目实现了一套完整的 TEC 温控算法验证系统，涵盖底层驱动、信号采集、温度换算、增量式 PID 控制、继电反馈自整定、串口通信与上位机交互全链路。
+<img width="1051" height="743" alt="image" src="https://github.com/user-attachments/assets/9362d6ee-9122-4624-a51a-bc73f685c799" />
+
 
 **当前阶段说明：** 本系统目前处于**算法模拟验证阶段**，尚未接入真实 TEC 负载与 NTC 热敏电阻。验证方式为：使用 DAC8568 输出的电压信号**模拟 NTC 分压电压**，将该电压直接回环接入 ADS1256 差分输入端，由 ADC 读取后经温度模型反向换算为“模拟温度值”，以此验证温度采集、PID 控制与自动整定算法的正确性。DAC 输出 → ADC 采集 → 温度换算 → PID 计算 → DAC 输出调整，形成完整的数字闭环，逻辑与真实 TEC 温控系统完全一致。
 
@@ -158,57 +160,72 @@
 
 
 ## 工程文件结构
-Temperature-Control/
-├── Core/ # STM32CubeMX 生成的 HAL 层代码
-│ ├── Inc/ # 头文件目录
-│ │ ├── main.h # 全局引脚定义与公共声明
-│ │ ├── gpio.h # GPIO 初始化声明
-│ │ ├── dma.h # DMA 配置声明
-│ │ ├── usart.h # USART 配置声明
-│ │ ├── stm32f4xx_it.h # 中断处理声明
-│ │ └── stm32f4xx_hal_conf.h # HAL 模块使能与系统参数配置
-│ └── Src/ # 源文件目录
-│ ├── main.c # ★ 系统入口与主循环（功能模块集成）
-│ ├── gpio.c # GPIO 初始化
-│ ├── dma.c # DMA 通道配置
-│ ├── usart.c # USART1 与 DMA 绑定配置
-│ ├── stm32f4xx_it.c # SysTick、USART、DMA 中断转发
-│ ├── stm32f4xx_hal_msp.c # HAL 底层 MSP 初始化
-│ └── system_stm32f4xx.c # 系统时钟与核心启动
-│
-├── Drivers/ # 驱动库
-│ ├── CMSIS/ # ARM Cortex-M4 内核与设备头文件
-│ └── STM32F4xx_HAL_Driver/ # STM32F4 HAL 驱动（GPIO/DMA/UART/RCC等）
-│
-├── USER/ # ★ 用户功能模块（核心业务代码）
-│ ├── ads1255.c / ads1255.h # ADS1256 驱动：SPI时序、差分采样、滤波、电压换算
-│ ├── bsp_DAC8568.c / bsp_DAC8568.h # DAC8568 驱动：模拟SPI时序、多通道输出
-│ ├── thermal.c / thermal.h # NTC 电桥：电压↔电阻↔温度双向换算
-│ ├── formula.c / formula.h # 增量式PID算法 + 温度→电压映射 + TEC输出
-│ ├── pid.c / pid.h # 继电反馈自动整定 + 三种控制模式调度
-│ ├── uart1_comm.c / uart1_comm.h # UART1 DMA环形接收、行缓存、DMA发送
-│ └── command_parser.c / command_parser.h # 上位机命令解析与参数控制
-│
-├── MDK-ARM/ # Keil 工程目录
-│ ├── TempCubeMX.uvprojx # ★ Keil 工程文件（双击打开）
-│ ├── TempCubeMX.uvoptx # 调试与用户选项
-│ ├── startup_stm32f407xx.s # 中断向量表与启动代码
-│ ├── RTE/ # 运行时环境组件配置
-│ └── TempCubeMX/ # 编译输出（.o / .map / .hex / .axf 等）
-│
-├── TempCubeMX.ioc # ★ CubeMX 配置文件（双击可重新配置）
-├── .mxproject # CubeMX 辅助信息
-│
-├── ADS1255_CubeMX配置流程.md # ADS1256 引脚定义、CubeMX配置与驱动接入说明
-├── DAC8568_CubeMX配置流程.md # DAC8568 引脚配置、驱动接入与调用示例
-├── thermal配置.md # NTC 电桥原理、计算公式与主程序调用流程
-├── 增量式formula配置.md # 增量式PID算法原理、推导与参数说明
-├── 自动整定PID配置.md # 继电反馈自整定原理、振荡参数计算与PID写入流程
-├── 数据整理（差分）.txt # DAC差分输出与ADS1256实测数据、误差统计
-│
-└── README.md # 本文件
 
-text
+### Core（STM32CubeMX 生成的 HAL 层代码）
+
+**Inc/ 头文件目录**
+- main.h：全局引脚定义与公共声明
+- gpio.h：GPIO 初始化声明
+- dma.h：DMA 配置声明
+- usart.h：USART 配置声明
+- stm32f4xx_it.h：中断处理声明
+- stm32f4xx_hal_conf.h：HAL 模块使能与系统参数配置
+
+**Src/ 源文件目录**
+- main.c：系统入口与主循环（功能模块集成）
+- gpio.c：GPIO 初始化
+- dma.c：DMA 通道配置
+- usart.c：USART1 与 DMA 绑定配置
+- stm32f4xx_it.c：SysTick、USART、DMA 中断转发
+- stm32f4xx_hal_msp.c：HAL 底层 MSP 初始化
+- system_stm32f4xx.c：系统时钟与核心启动
+
+
+### Drivers（驱动库）
+
+- CMSIS/：ARM Cortex-M4 内核与设备头文件
+- STM32F4xx_HAL_Driver/：STM32F4 HAL 驱动（GPIO / DMA / UART / RCC 等）
+
+
+### USER（核心业务代码）
+
+- ads1255.c / ads1255.h：ADS1256 驱动（SPI时序、差分采样、滤波、电压换算）
+- bsp_DAC8568.c / bsp_DAC8568.h：DAC8568 驱动（模拟 SPI 时序、多通道输出）
+- thermal.c / thermal.h：NTC 电桥（电压 ↔ 电阻 ↔ 温度双向换算）
+- formula.c / formula.h：增量式 PID 算法 + 温度→电压映射
+- pid.c / pid.h：继电反馈自动整定 + 三种控制模式调度
+- uart1_comm.c / uart1_comm.h：UART1 DMA 环形接收、行缓存、DMA 发送
+- command_parser.c / command_parser.h：上位机命令解析与参数控制
+
+
+### MDK-ARM（Keil 工程目录）
+
+- TempCubeMX.uvprojx：Keil 工程文件（双击打开）
+- TempCubeMX.uvoptx：调试与用户选项
+- startup_stm32f407xx.s：中断向量表与启动代码
+- RTE/：运行时环境组件配置
+- TempCubeMX/：编译输出（.o / .map / .hex / .axf 等）
+
+
+### 工程配置文件
+
+- TempCubeMX.ioc：CubeMX 配置文件（双击可重新配置）
+- .mxproject：CubeMX 辅助信息
+
+
+### 技术文档与测试数据
+
+- ADS1255_CubeMX配置流程.md：ADS1256 引脚定义、CubeMX 配置与驱动接入说明
+- DAC8568_CubeMX配置流程.md：DAC8568 引脚配置、驱动接入与调用示例
+- thermal配置.md：NTC 电桥原理、计算公式与主程序调用流程
+- 增量式formula配置.md：增量式 PID 算法原理、推导与参数说明
+- 自动整定PID配置.md：继电反馈自整定原理、振荡参数计算与 PID 写入流程
+- 数据整理（差分）.txt：DAC 差分输出与 ADS1256 实测数据、误差统计
+
+
+### 根目录文件
+
+- README.md：项目说明文档（本文件）
 
 
 ## 配置与技术文档说明
