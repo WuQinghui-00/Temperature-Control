@@ -9,6 +9,10 @@
 本项目实现了一套完整的 TEC 温控算法验证系统，涵盖底层驱动、信号采集、温度换算、增量式 PID 控制、继电反馈自整定、串口通信与上位机交互全链路。
 <img width="1051" height="743" alt="image" src="https://github.com/user-attachments/assets/9362d6ee-9122-4624-a51a-bc73f685c799" />
 
+## 硬件连接
+<img width="1280" height="1707" alt="b14ea41343676bec214f2a11a6e0afaf" src="https://github.com/user-attachments/assets/4ad9c7ed-a3a4-4308-85ab-497422ecc0db" />
+
+
 
 **当前阶段说明：** 本系统目前处于**算法模拟验证阶段**，尚未接入真实 TEC 负载与 NTC 热敏电阻。验证方式为：使用 DAC8568 输出的电压信号**模拟 NTC 分压电压**，将该电压直接回环接入 ADS1256 差分输入端，由 ADC 读取后经温度模型反向换算为“模拟温度值”，以此验证温度采集、PID 控制与自动整定算法的正确性。DAC 输出 → ADC 采集 → 温度换算 → PID 计算 → DAC 输出调整，形成完整的数字闭环，逻辑与真实 TEC 温控系统完全一致。
 
