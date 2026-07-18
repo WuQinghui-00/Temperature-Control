@@ -241,6 +241,15 @@
 | **自动整定PID配置.md** | 继电反馈振荡法原理说明、迟滞比较器设计、振荡周期与幅值统计方法、Ku/Tu 计算过程、Tyreus-Luyben PID 参数整定规则、连续域到离散域的系数转换方法（控制周期 200ms）、安全保护机制与状态机设计 |
 | **数据整理（差分）.txt** | DAC 差分输出码值与 ADS1256 实测差分电压的对应关系、多组实测数据记录、误差范围与重复性统计分析，用于验证 ADC 采样精度与 DAC 输出线性度 |
 
+## 运行结果
+<img width="1517" height="449" alt="image" src="https://github.com/user-attachments/assets/6a0127e6-85d4-4fcc-b42e-765be95fd168" />
+
+<img width="1433" height="309" alt="image" src="https://github.com/user-attachments/assets/58a17204-a2b4-42bb-ab87-309f36c4a7a3" />
+
+<img width="1431" height="578" alt="image" src="https://github.com/user-attachments/assets/7d95edd6-7814-443e-8d0b-8b8a9b1dee3a" />
+
+<img width="1451" height="519" alt="image" src="https://github.com/user-attachments/assets/a17b4868-4929-47fc-934c-926abe8c768c" />
+
 
 ## 快速开始
 
